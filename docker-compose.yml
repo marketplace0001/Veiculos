@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: automarketplace-postgres
+    environment:
+      POSTGRES_DB: automarketplace
+      POSTGRES_USER: automarketplace
+      POSTGRES_PASSWORD: automarketplace
+    ports:
+      - "5432:5432"
+    volumes:
+      - automarketplace_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U automarketplace -d automarketplace"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  automarketplace_pgdata:
