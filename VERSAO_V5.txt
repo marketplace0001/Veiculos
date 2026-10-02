@@ -1,0 +1,3 @@
+AutoMarketplace v1.0 - v5 Teste Online Gratuito
+Build: frontend TypeScript + backend Java no mesmo servico
+Destino: Render Blueprint (Web Service + PostgreSQL Free)

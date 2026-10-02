@@ -1,0 +1,6 @@
+AutoMarketplace v1.0 - Etapa 1 consolidada
+Pacote: v4
+Frontend: React + TypeScript + Vite
+Backend: Java 21 + Spring Boot
+Banco: PostgreSQL 16
+Correção principal: proxy /api + testes automáticos de build/login

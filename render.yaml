@@ -1,0 +1,36 @@
+services:
+  - type: web
+    name: automarketplace-v5
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/public/vehicles
+    envVars:
+      - key: DB_HOST
+        fromDatabase:
+          name: automarketplace-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: automarketplace-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: automarketplace-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: automarketplace-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: automarketplace-db
+          property: password
+      - key: JWT_SECRET
+        generateValue: true
+
+databases:
+  - name: automarketplace-db
+    plan: free
+    databaseName: automarketplace
+    user: automarketplace
