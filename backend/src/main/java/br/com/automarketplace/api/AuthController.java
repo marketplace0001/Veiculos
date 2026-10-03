@@ -1,0 +1,8 @@
+package br.com.automarketplace.api;
+import br.com.automarketplace.model.*; import br.com.automarketplace.repo.UserRepository; import br.com.automarketplace.security.JwtService; import jakarta.validation.constraints.*; import org.springframework.http.*; import org.springframework.security.crypto.password.PasswordEncoder; import org.springframework.web.bind.annotation.*; import java.util.Map;
+@RestController @RequestMapping("/api/auth") public class AuthController {
+ private final UserRepository users; private final PasswordEncoder encoder; private final JwtService jwt; public AuthController(UserRepository u,PasswordEncoder e,JwtService j){users=u;encoder=e;jwt=j;}
+ public record Login(@Email String email,@NotBlank String password){} public record Register(@NotBlank String name,@Email String email,@NotBlank String password,String phone){}
+ @PostMapping("/login") ResponseEntity<?> login(@RequestBody Login r){var u=users.findByEmail(r.email()).orElse(null); if(u==null||!encoder.matches(r.password(),u.getPasswordHash())) return ResponseEntity.status(401).body(Map.of("message","E-mail ou senha inválidos")); return ResponseEntity.ok(Map.of("token",jwt.create(u),"role",u.getRole(),"name",u.getName(),"storeId",u.getStore()==null?0:u.getStore().getId()));}
+ @PostMapping("/register") ResponseEntity<?> register(@RequestBody Register r){if(users.findByEmail(r.email()).isPresent())return ResponseEntity.badRequest().body(Map.of("message","E-mail já cadastrado"));var u=new User();u.setName(r.name());u.setEmail(r.email());u.setPasswordHash(encoder.encode(r.password()));u.setPhone(r.phone());u.setRole(Role.CONSUMER);users.save(u);return ResponseEntity.status(201).body(Map.of("token",jwt.create(u),"role",u.getRole(),"name",u.getName()));}
+}

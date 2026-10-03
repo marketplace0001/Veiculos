@@ -1,1 +1,8 @@
-
+package br.com.automarketplace.api;
+import br.com.automarketplace.model.*; import br.com.automarketplace.repo.*; import org.springframework.web.bind.annotation.*; import java.util.*;
+@RestController @RequestMapping("/api/admin") public class AdminController {
+ private final StoreRepository stores; private final CityRepository cities; private final VehicleRepository vehicles; private final LeadRepository leads; private final UserRepository users; private final RentalVehicleRepository rentals; private final RentalRequestRepository rentalRequests;
+ public AdminController(StoreRepository s,CityRepository c,VehicleRepository v,LeadRepository l,UserRepository u,RentalVehicleRepository r,RentalRequestRepository rr){stores=s;cities=c;vehicles=v;leads=l;users=u;rentals=r;rentalRequests=rr;}
+ @GetMapping("/stats") Map<String,Long> stats(){return Map.of("stores",stores.count(),"cities",cities.count(),"vehiclesActive",vehicles.countByStatus(VehicleStatus.ACTIVE),"leads",leads.count(),"users",users.count(),"rentalVehiclesAvailable",rentals.countByStatus(RentalVehicleStatus.AVAILABLE),"rentalRequests",rentalRequests.count());}
+ @GetMapping("/stores") List<Store> stores(){return stores.findAll();} @PostMapping("/stores") Store store(@RequestBody Store s){return stores.save(s);} @GetMapping("/cities") List<City> cities(){return cities.findAll();} @PostMapping("/cities") City city(@RequestBody City c){return cities.save(c);} @GetMapping("/vehicles") List<Vehicle> vehicles(){return vehicles.findAll();} @GetMapping("/leads") List<Lead> leads(){return leads.findAll();} @GetMapping("/rentals") List<RentalVehicle> rentals(){return rentals.findAll();} @GetMapping("/rental-requests") List<RentalRequest> rentalRequests(){return rentalRequests.findAll();}
+}
