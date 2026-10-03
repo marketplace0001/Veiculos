@@ -26,7 +26,7 @@ services:
         fromDatabase:
           name: automarketplace-db
           property: password
-      - key: JWT_SECRET
+      - key: APP_JWT_SECRET
         generateValue: true
 
 databases:
