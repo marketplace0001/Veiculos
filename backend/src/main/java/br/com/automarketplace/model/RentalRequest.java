@@ -1,0 +1,10 @@
+package br.com.automarketplace.model;
+import jakarta.persistence.*; import java.time.*; import java.math.BigDecimal;
+@Entity @Table(name="rental_requests")
+public class RentalRequest {
+ @Id @GeneratedValue(strategy=GenerationType.IDENTITY) private Long id; @Column(nullable=false) private String name; @Column(nullable=false) private String phone; private String email;
+ @ManyToOne(optional=false) private RentalVehicle rentalVehicle; @ManyToOne(optional=false) private Store store; @ManyToOne(optional=false) private City city;
+ private LocalDate pickupDate; private LocalDate returnDate; private Integer days; private BigDecimal estimatedTotal;
+ @Enumerated(EnumType.STRING) private RentalRequestStatus status=RentalRequestStatus.NEW; @Column(length=2500) private String notes; private Instant createdAt=Instant.now();
+ public Long getId(){return id;} public String getName(){return name;} public void setName(String v){name=v;} public String getPhone(){return phone;} public void setPhone(String v){phone=v;} public String getEmail(){return email;} public void setEmail(String v){email=v;} public RentalVehicle getRentalVehicle(){return rentalVehicle;} public void setRentalVehicle(RentalVehicle v){rentalVehicle=v;} public Store getStore(){return store;} public void setStore(Store v){store=v;} public City getCity(){return city;} public void setCity(City v){city=v;} public LocalDate getPickupDate(){return pickupDate;} public void setPickupDate(LocalDate v){pickupDate=v;} public LocalDate getReturnDate(){return returnDate;} public void setReturnDate(LocalDate v){returnDate=v;} public Integer getDays(){return days;} public void setDays(Integer v){days=v;} public BigDecimal getEstimatedTotal(){return estimatedTotal;} public void setEstimatedTotal(BigDecimal v){estimatedTotal=v;} public RentalRequestStatus getStatus(){return status;} public void setStatus(RentalRequestStatus v){status=v;} public String getNotes(){return notes;} public void setNotes(String v){notes=v;} public Instant getCreatedAt(){return createdAt;}
+}
