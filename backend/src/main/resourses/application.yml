@@ -1,1 +1,19 @@
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
 
+spring:
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:automarketplace}
+    username: ${DB_USER:automarketplace}
+    password: ${DB_PASSWORD:automarketplace}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+
+app:
+  jwt-secret: ${JWT_SECRET:AutoMarketplace-V1-Secret-Key-Change-This-In-Production-2026}
