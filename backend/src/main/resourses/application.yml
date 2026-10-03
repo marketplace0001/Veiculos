@@ -16,4 +16,4 @@ spring:
         format_sql: true
 
 app:
-  jwt-secret: ${APP_JWT_SECRET:AutoMarketplace-V1-Secret-Key-Change-This-In-Production-2026}
+  jwt-secret: ${JWT_SECRET:AutoMarketplace-V1-Secret-Key-Change-This-In-Production-2026}
