@@ -1,4 +1,4 @@
-package br.com.automarketplace;
+package br.com.automarketplace.config;
 
 import br.com.automarketplace.model.City;
 import br.com.automarketplace.repo.CityRepository;
