@@ -4,28 +4,15 @@ services:
     runtime: docker
     plan: free
     dockerfilePath: ./Dockerfile
+
     healthCheckPath: /api/public/vehicles
+
     envVars:
-      - key: DB_HOST
+      - key: DATABASE_URL
         fromDatabase:
           name: automarketplace-db
-          property: host
-      - key: DB_PORT
-        fromDatabase:
-          name: automarketplace-db
-          property: port
-      - key: DB_NAME
-        fromDatabase:
-          name: automarketplace-db
-          property: database
-      - key: DB_USER
-        fromDatabase:
-          name: automarketplace-db
-          property: user
-      - key: DB_PASSWORD
-        fromDatabase:
-          name: automarketplace-db
-          property: password
+          property: connectionString
+
       - key: APP_JWT_SECRET
         generateValue: true
 
