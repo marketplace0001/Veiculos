@@ -1,8 +1,9 @@
-server:
-  port: ${PORT:8080}
-  forward-headers-strategy: framework
-
 spring:
+
+  sql:
+    init:
+      mode: always
+
   jpa:
     hibernate:
       ddl-auto: update
