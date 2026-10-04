@@ -8,10 +8,30 @@ services:
     healthCheckPath: /api/public/vehicles
 
     envVars:
-      - key: DATABASE_URL
+      - key: SPRING_DATASOURCE_HOST
         fromDatabase:
           name: automarketplace-db
-          property: connectionString
+          property: host
+
+      - key: SPRING_DATASOURCE_PORT
+        fromDatabase:
+          name: automarketplace-db
+          property: port
+
+      - key: SPRING_DATASOURCE_DATABASE
+        fromDatabase:
+          name: automarketplace-db
+          property: database
+
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: automarketplace-db
+          property: user
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: automarketplace-db
+          property: password
 
       - key: APP_JWT_SECRET
         generateValue: true
