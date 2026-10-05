@@ -16,145 +16,68 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        System.out.println(
-            "=============================================="
+        System.out.println("==============================================");
+        System.out.println("AutoMarketplace - verificando banco de dados...");
+
+        Integer citiesTable = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) " +
+                "FROM information_schema.tables " +
+                "WHERE table_schema = 'public' " +
+                "AND table_name = 'cities'",
+                Integer.class
         );
 
-        System.out.println(
-            "AutoMarketplace - verificando banco de dados..."
-        );
+        if (citiesTable != null && citiesTable > 0) {
 
-        try {
+            System.out.println("Tabela cities encontrada.");
 
             Integer cityCount = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM cities",
-                Integer.class
+                    "SELECT COUNT(*) FROM cities",
+                    Integer.class
             );
 
             if (cityCount != null && cityCount == 0) {
 
                 jdbcTemplate.update(
-                    """
-                    INSERT INTO cities
-                    (
-                        name,
-                        state,
-                        active
-                    )
-                    VALUES
-                    (
-                        ?,
-                        ?,
-                        ?
-                    )
-                    """,
-                    "Cidade Piloto",
-                    "RJ",
-                    true
+                        "INSERT INTO cities (name, state, active) VALUES (?, ?, ?)",
+                        "Cidade Piloto",
+                        "RJ",
+                        true
                 );
 
-                System.out.println(
-                    "Cidade inicial criada."
-                );
-
-            } else {
-
-                System.out.println(
-                    "Tabela cities encontrada."
-                );
-
+                System.out.println("Cidade inicial criada.");
             }
 
+        } else {
+            System.out.println("ATENCAO: tabela cities ainda nao existe.");
+        }
 
-            Integer vehicleTable = jdbcTemplate.queryForObject(
-                """
-                SELECT COUNT(*)
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                AND table_name = 'vehicles'
-                """,
-                Integer.class
-            );
+        verificarTabela("stores");
+        verificarTabela("users");
+        verificarTabela("vehicles");
+        verificarTabela("rental_vehicles");
+        verificarTabela("leads");
+        verificarTabela("rental_requests");
 
-            if (
-                vehicleTable != null &&
-                vehicleTable > 0
-            ) {
+        System.out.println("Verificacao do banco concluida.");
+        System.out.println("==============================================");
+    }
 
-                System.out.println(
-                    "Tabela vehicles encontrada."
-                );
+    private void verificarTabela(String tabela) {
 
-            }
+        Integer quantidade = jdbcTemplate.queryForObject(
+                "SELECT COUNT(*) " +
+                "FROM information_schema.tables " +
+                "WHERE table_schema = 'public' " +
+                "AND table_name = ?",
+                Integer.class,
+                tabela
+        );
 
-
-            Integer storeTable = jdbcTemplate.queryForObject(
-                """
-                SELECT COUNT(*)
-                FROM information_schema.tables
-                WHERE table_schema = 'public'
-                AND table_name = 'stores'
-                """,
-                Integer.class
-            );
-
-            if (
-                storeTable != null &&
-                storeTable > 0
-            ) {
-
-                System.out.println(
-                    "Tabela stores encontrada."
-                );
-
-            }
-
-
-            Integer rentalVehicleTable =
-                jdbcTemplate.queryForObject(
-                    """
-                    SELECT COUNT(*)
-                    FROM information_schema.tables
-                    WHERE table_schema = 'public'
-                    AND table_name = 'rental_vehicles'
-                    """,
-                    Integer.class
-                );
-
-            if (
-                rentalVehicleTable != null &&
-                rentalVehicleTable > 0
-            ) {
-
-                System.out.println(
-                    "Tabela rental_vehicles encontrada."
-                );
-
-            }
-
-
-            Integer rentalRequestTable =
-                jdbcTemplate.queryForObject(
-                    """
-                    SELECT COUNT(*)
-                    FROM information_schema.tables
-                    WHERE table_schema = 'public'
-                    AND table_name = 'rental_requests'
-                    """,
-                    Integer.class
-                );
-
-            if (
-                rentalRequestTable != null &&
-                rentalRequestTable > 0
-            ) {
-
-                System.out.println(
-                    "Tabela rental_requests encontrada."
-                );
-
-            }
-
-
-            System.out.println(
-                "Banco de dados inicializado com sucesso."
+        if (quantidade != null && quantidade > 0) {
+            System.out.println("Tabela " + tabela + " encontrada.");
+        } else {
+            System.out.println("ATENCAO: tabela " + tabela + " nao encontrada.");
+        }
+    }
+}
